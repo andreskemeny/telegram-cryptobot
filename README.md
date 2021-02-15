@@ -21,7 +21,7 @@ SECRET = 'your buda secret key'
 BOT_TOKEN = 'your telegram bot token'
 URL = 'your heroku app url'
 ``` 
-You'll get the `API_KEY` and `SECRET` from your [Buda.com](https://www.buda.com/) account, the `BOT_TOKEN` from Telegram and `URL` from your Heroku app.
+You'll get `API_KEY` and `SECRET` from your [Buda.com](https://www.buda.com/) account, `BOT_TOKEN` from Telegram and `URL` from your Heroku app.
 
 ### Uploading the bot to Heroku
 
