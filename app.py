@@ -34,14 +34,22 @@ def respond():
     elif command == "/balance":
         try:
             data = buda.current_balance()
-            response_message = f"BTC: {data['BTC']}, \nCLP: {data['CLP']}"
+            response_message = f"BTC: {data['BTC']} ({data['converted_btc']}CLP), \nCLP: {data['CLP']}"
         except Exception as e:
             response_message = f"An error has occurred: {str(e)}"
     elif command == "/convert":
         try:
             split_message = incoming_message.split()
-            data = buda.convert(split_message[1], split_message[2])
-            response_message = f"{split_message[1]}{split_message[2].upper()} is equal to {data}"
+            amount = split_message[1]
+            currency = split_message[2]
+            converted = buda.convert(split_message[1], split_message[2])
+
+            if currency == "clp":
+                response_message = f"{amount}{currency} is equal to {converted}BTC"
+            elif currency == "btc":
+                response_message = f"{amount}{currency} is equal to {converted}CLP"
+            else:
+                response_message = f"Error: The currency youre converting must be either CLP or BTC"
         except Exception as e:
             response_message = f"An error has occurred: {str(e)}"
     elif command == "/order":

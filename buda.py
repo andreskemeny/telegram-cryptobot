@@ -68,7 +68,7 @@ def btc_data() -> dict:
 
 
 def convert(amount: float, currency: str) -> str:
-    """Convert currencies, from BTC to CLP or CLP to BTC, returns str with result"""
+    """Convert currencies (BTC to CLP or CLP to BTC), returns str with result"""
 
     try:
         url = 'https://www.buda.com/api/v2/markets/btc-clp/ticker'
@@ -76,12 +76,11 @@ def convert(amount: float, currency: str) -> str:
         min_ask = res.json()["ticker"]["min_ask"][0]
 
         if currency == "clp":
-            return f"{float(amount)/float(min_ask)}BTC"
+            return float(amount)/float(min_ask)
         elif currency == "btc":
-            return f"{float(amount)*float(min_ask)}CLP"
+            return float(amount)*float(min_ask)
         else:
-            raise ValueError(
-                "The currency youre converting must be either CLP or BTC")
+            return f"Error: The currency youre converting must be either CLP or BTC"
     except Exception as e:
         print(f"An error has occurred in convert_to_btc(), error: {str(e)}")
         return f"An error has occurred in convert_to_btc(), error: {str(e)}"
@@ -101,9 +100,13 @@ def current_balance() -> dict:
         res = res.json()
 
         data = {
-            "BTC": res["balances"][0]["available_amount"][0],
-            "CLP": res["balances"][2]["available_amount"][0]
+            "BTC": res["balances"][0]["amount"][0],
+            "CLP": res["balances"][2]["amount"][0]
         }
+
+        converted_btc = convert(data["BTC"], "btc")
+
+        data["converted_btc"] = converted_btc
 
         return data
     except Exception as e:
